@@ -21,6 +21,8 @@ export async function POST(request: NextRequest) {
     if (req.task) {
       await client.sql`CREATE TABLE IF NOT EXISTS todos(id serial, task varchar(255))`; // to create table using code
       await client.sql`INSERT INTO todos(task) VALUES(${req.task})`; // to add new task
+      const res = (await client.sql`SELECT * FROM todos`).rows;
+      console.log('res', res.filter(row => row.id === 1));
       return NextResponse.json({ message: "Task added successfully" });
     } else {
       throw new Error("Task field is required");
