@@ -10,7 +10,7 @@ import {
   import { InferModel } from "drizzle-orm";
   import { sql } from "@vercel/postgres";
   
-  export const todoTable = pgTable("todos", {
+  export const todoTable = pgTable("todo", {
     id: serial("id").primaryKey(),
     task: varchar("task", {length: 255}).notNull()
   })

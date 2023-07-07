@@ -38,7 +38,7 @@ import { sql } from "drizzle-orm";
 export async function GET(request: NextRequest) {
   
     try {
-      sql`CREATE TABLE IF NOT EXISTS todos(id serial, task varchar(255));` // to create table using code
+      sql`CREATE TABLE IF NOT EXISTS todo(id serial, task varchar(255));` // to create table using code
       // await client.sql`DROP TABLE todos` // to drop table
       const res = await db.select().from(todoTable);
 
@@ -55,10 +55,9 @@ export async function GET(request: NextRequest) {
       const req = await request.json();
       try {
         if (req.task) {
-          sql`CREATE TABLE IF NOT EXISTS todos(id serial, task varchar(255))`; // to create table using code
-           db.insert(todoTable).values({task: req.task}).returning(); // to add new task
-          const res = db.select().from(todoTable);
-          return NextResponse.json({ data: res });
+           await db.insert(todoTable).values({task: req.task}).returning(); // to add new task
+          const res = await db.select().from(todoTable);
+          return NextResponse.json({ message: "Data added succesfully" });
         } else {
           throw new Error("Task field is required");
         }
